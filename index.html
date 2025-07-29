@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Michael 9 Grant Music Scales Explorer</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+      color: #333;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+    }
+    
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 30px;
+      font-size: 2.5em;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .controls {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 30px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    label {
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #34495e;
+      font-size: 1.1em;
+    }
+    
+    select {
+      padding: 12px 16px;
+      border: 2px solid #bdc3c7;
+      border-radius: 8px;
+      font-size: 16px;
+      background: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-width: 180px;
+    }
+    
+    select:hover {
+      border-color: #3498db;
+      box-shadow: 0 4px 8px rgba(52, 152, 219, 0.2);
+    }
+    
+    select:focus {
+      outline: none;
+      border-color: #2980b9;
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    }
+    
+    .scale-display {
+      background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 30px;
+      border: 1px solid #dee2e6;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    
+    .scale-title {
+      font-size: 1.8em;
+      font-weight: bold;
+      color: #2c3e50;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+    
+    .scale-notes {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+    
+    .note {
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: white;
+      padding: 12px 18px;
+      border-radius: 25px;
+      font-weight: bold;
+      font-size: 1.1em;
+      box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+      transition: transform 0.2s ease;
+    }
+    
+    .note:hover {
+      transform: translateY(-2px);
+    }
+    
+    .scale-info {
+      text-align: center;
+      color: #7f8c8d;
+      font-style: italic;
+      margin-top: 10px;
+    }
+    
+    .scales-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+    
+    .scale-category {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-left: 4px solid #3498db;
+    }
+    
+    .category-title {
+      font-size: 1.3em;
+      font-weight: bold;
+      color: #2c3e50;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #ecf0f1;
+      padding-bottom: 8px;
+    }
+    
+    .scale-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .scale-list li {
+      padding: 8px 0;
+      border-bottom: 1px solid #ecf0f1;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .scale-list li:hover {
+      background: #f8f9fa;
+      padding-left: 10px;
+      color: #3498db;
+    }
+    
+    .scale-list li:last-child {
+      border-bottom: none;
+    }
+    
+    @media (max-width: 768px) {
+      .controls {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .note {
+        padding: 8px 12px;
+        font-size: 1em;
+      }
+      
+      h1 {
+        font-size: 2em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎵 Michael 9 Grant Music Scales Explorer</h1>
+    
+    <div class="controls">
+      <div class="control-group">
+        <label for="rootNote">Root Note:</label>
+        <select id="rootNote">
+          <option value="C">C</option>
+          <option value="C#">C# / Db</option>
+          <option value="D">D</option>
+          <option value="D#">D# / Eb</option>
+          <option value="E">E</option>
+          <option value="F">F</option>
+          <option value="F#">F# / Gb</option>
+          <option value="G">G</option>
+          <option value="G#">G# / Ab</option>
+          <option value="A">A</option>
+          <option value="A#">A# / Bb</option>
+          <option value="B">B</option>
+        </select>
+      </div>
+      
+      <div class="control-group">
+        <label for="scaleSelect">Scale:</label>
+        <select id="scaleSelect">
+          <optgroup label="Western Diatonic Scales">
+            <option value="major">Major (Ionian)</option>
+            <option value="minor">Natural Minor (Aeolian)</option>
+            <option value="dorian">Dorian</option>
+            <option value="phrygian">Phrygian</option>
+            <option value="lydian">Lydian</option>
+            <option value="mixolydian">Mixolydian</option>
+            <option value="locrian">Locrian</option>
+          </optgroup>
+          <optgroup label="Harmonic and Melodic Variants">
+            <option value="harmonicMinor">Harmonic Minor</option>
+            <option value="melodicMinor">Melodic Minor</option>
+            <option value="doubleHarmonicMajor">Double Harmonic Major</option>
+            <option value="hungarianMinor">Hungarian Minor</option>
+            <option value="neapolitanMinor">Neapolitan Minor</option>
+            <option value="neapolitanMajor">Neapolitan Major</option>
+            <option value="romanianMinor">Romanian Minor</option>
+          </optgroup>
+          <optgroup label="Pentatonic Scales">
+            <option value="majorPentatonic">Major Pentatonic</option>
+            <option value="minorPentatonic">Minor Pentatonic</option>
+            <option value="egyptian">Egyptian</option>
+            <option value="blues">Blues Scale</option>
+            <option value="hirajoshi">Hirajoshi</option>
+            <option value="kumoi">Kumoi</option>
+            <option value="inSen">In-Sen</option>
+            <option value="yo">Yo Scale</option>
+            <option value="pelog">Pelog Pentatonic</option>
+          </optgroup>
+          <optgroup label="Symmetrical Scales">
+            <option value="wholeTone">Whole Tone</option>
+            <option value="chromatic">Chromatic</option>
+            <option value="octatonic">Octatonic (Half-Whole)</option>
+            <option value="augmented">Augmented Scale</option>
+          </optgroup>
+          <optgroup label="Modes of Melodic Minor">
+            <option value="dorianFlat2">Dorian ♭2</option>
+            <option value="lydianAugmented">Lydian Augmented</option>
+            <option value="lydianDominant">Lydian Dominant</option>
+            <option value="mixolydianFlat6">Mixolydian ♭6</option>
+            <option value="locrianNatural2">Locrian ♮2</option>
+            <option value="altered">Altered Scale (Super Locrian)</option>
+          </optgroup>
+          <optgroup label="Jazz and Bebop Scales">
+            <option value="bebopMajor">Bebop Major</option>
+            <option value="bebopMinor">Bebop Minor</option>
+            <option value="bebopDominant">Bebop Dominant</option>
+            <option value="bebopDorian">Bebop Dorian</option>
+          </optgroup>
+        </select>
+      </div>
+    </div>
+    
+    <div class="scale-display">
+      <div class="scale-title" id="scaleTitle">C Major (Ionian)</div>
+      <div class="scale-notes" id="scaleNotes"></div>
+      <div class="scale-info" id="scaleInfo">The most fundamental scale in Western music theory</div>
+    </div>
+    
+    <div class="scales-grid">
+      <div class="scale-category">
+        <div class="category-title">Western Diatonic (7-Note)</div>
+        <ul class="scale-list">
+          <li onclick="selectScale('major')">Major (Ionian)</li>
+          <li onclick="selectScale('minor')">Natural Minor (Aeolian)</li>
+          <li onclick="selectScale('dorian')">Dorian</li>
+          <li onclick="selectScale('phrygian')">Phrygian</li>
+          <li onclick="selectScale('lydian')">Lydian</li>
+          <li onclick="selectScale('mixolydian')">Mixolydian</li>
+          <li onclick="selectScale('locrian')">Locrian</li>
+        </ul>
+      </div>
+      
+      <div class="scale-category">
+        <div class="category-title">Harmonic & Melodic Variants</div>
+        <ul class="scale-list">
+          <li onclick="selectScale('harmonicMinor')">Harmonic Minor</li>
+          <li onclick="selectScale('melodicMinor')">Melodic Minor</li>
+          <li onclick="selectScale('doubleHarmonicMajor')">Double Harmonic Major</li>
+          <li onclick="selectScale('hungarianMinor')">Hungarian Minor</li>
+          <li onclick="selectScale('neapolitanMinor')">Neapolitan Minor</li>
+          <li onclick="selectScale('neapolitanMajor')">Neapolitan Major</li>
+          <li onclick="selectScale('romanianMinor')">Romanian Minor</li>
+        </ul>
+      </div>
+      
+      <div class="scale-category">
+        <div class="category-title">Pentatonic Scales</div>
+        <ul class="scale-list">
+          <li onclick="selectScale('majorPentatonic')">Major Pentatonic</li>
+          <li onclick="selectScale('minorPentatonic')">Minor Pentatonic</li>
+          <li onclick="selectScale('egyptian')">Egyptian</li>
+          <li onclick="selectScale('blues')">Blues Scale</li>
+          <li onclick="selectScale('hirajoshi')">Hirajoshi</li>
+          <li onclick="selectScale('kumoi')">Kumoi</li>
+          <li onclick="selectScale('inSen')">In-Sen</li>
+          <li onclick="selectScale('yo')">Yo Scale</li>
+          <li onclick="selectScale('pelog')">Pelog Pentatonic</li>
+        </ul>
+      </div>
+      
+      <div class="scale-category">
+        <div class="category-title">Symmetrical & Experimental</div>
+        <ul class="scale-list">
+          <li onclick="selectScale('wholeTone')">Whole Tone</li>
+          <li onclick="selectScale('chromatic')">Chromatic</li>
+          <li onclick="selectScale('octatonic')">Octatonic</li>
+          <li onclick="selectScale('augmented')">Augmented Scale</li>
+          <li onclick="selectScale('bebopMajor')">Bebop Major</li>
+          <li onclick="selectScale('bebopMinor')">Bebop Minor</li>
+          <li onclick="selectScale('altered')">Altered Scale</li>
+        </ul>
+      </div>
+    </div>
+    
+    <footer style="text-align: center; margin-top: 40px; padding: 20px; background: rgba(52, 73, 94, 0.1); border-radius: 10px; color: #7f8c8d; font-size: 0.9em;">
+      Michael 9 Grant Music Scales Explorer © <span id="currentYear"></span>
+    </footer>
+  </div>
+
+  <script>
+    const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const noteDisplay = ['C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G', 'G#/Ab', 'A', 'A#/Bb', 'B'];
+    
+    const scaleIntervals = {
+      // Western Diatonic
+      major: [0, 2, 4, 5, 7, 9, 11],
+      minor: [0, 2, 3, 5, 7, 8, 10],
+      dorian: [0, 2, 3, 5, 7, 9, 10],
+      phrygian: [0, 1, 3, 5, 7, 8, 10],
+      lydian: [0, 2, 4, 6, 7, 9, 11],
+      mixolydian: [0, 2, 4, 5, 7, 9, 10],
+      locrian: [0, 1, 3, 5, 6, 8, 10],
+      
+      // Harmonic and Melodic Variants
+      harmonicMinor: [0, 2, 3, 5, 7, 8, 11],
+      melodicMinor: [0, 2, 3, 5, 7, 9, 11],
+      doubleHarmonicMajor: [0, 1, 4, 5, 7, 8, 11],
+      hungarianMinor: [0, 2, 3, 6, 7, 8, 11],
+      neapolitanMinor: [0, 1, 3, 5, 7, 8, 11],
+      neapolitanMajor: [0, 1, 3, 5, 7, 9, 11],
+      romanianMinor: [0, 2, 3, 6, 7, 9, 10],
+      
+      // Pentatonic
+      majorPentatonic: [0, 2, 4, 7, 9],
+      minorPentatonic: [0, 3, 5, 7, 10],
+      egyptian: [0, 2, 5, 7, 10],
+      blues: [0, 3, 5, 6, 7, 10],
+      hirajoshi: [0, 2, 3, 7, 8],
+      kumoi: [0, 2, 3, 7, 9],
+      inSen: [0, 1, 5, 7, 10],
+      yo: [0, 3, 5, 7, 10],
+      pelog: [0, 1, 3, 7, 8],
+      
+      // Symmetrical
+      wholeTone: [0, 2, 4, 6, 8, 10],
+      chromatic: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+      octatonic: [0, 1, 3, 4, 6, 7, 9, 10],
+      augmented: [0, 3, 4, 7, 8, 11],
+      
+      // Modes of Melodic Minor
+      dorianFlat2: [0, 1, 3, 5, 7, 9, 10],
+      lydianAugmented: [0, 2, 4, 6, 8, 9, 11],
+      lydianDominant: [0, 2, 4, 6, 7, 9, 10],
+      mixolydianFlat6: [0, 2, 4, 5, 7, 8, 10],
+      locrianNatural2: [0, 2, 3, 5, 6, 8, 10],
+      altered: [0, 1, 3, 4, 6, 8, 10],
+      
+      // Bebop
+      bebopMajor: [0, 2, 4, 5, 7, 8, 9, 11],
+      bebopMinor: [0, 2, 3, 5, 7, 8, 9, 10],
+      bebopDominant: [0, 2, 4, 5, 7, 9, 10, 11],
+      bebopDorian: [0, 2, 3, 4, 5, 7, 9, 10]
+    };
+    
+    const scaleNames = {
+      major: 'Major (Ionian)',
+      minor: 'Natural Minor (Aeolian)',
+      dorian: 'Dorian',
+      phrygian: 'Phrygian',
+      lydian: 'Lydian',
+      mixolydian: 'Mixolydian',
+      locrian: 'Locrian',
+      harmonicMinor: 'Harmonic Minor',
+      melodicMinor: 'Melodic Minor',
+      doubleHarmonicMajor: 'Double Harmonic Major',
+      hungarianMinor: 'Hungarian Minor',
+      neapolitanMinor: 'Neapolitan Minor',
+      neapolitanMajor: 'Neapolitan Major',
+      romanianMinor: 'Romanian Minor',
+      majorPentatonic: 'Major Pentatonic',
+      minorPentatonic: 'Minor Pentatonic',
+      egyptian: 'Egyptian',
+      blues: 'Blues Scale',
+      hirajoshi: 'Hirajoshi',
+      kumoi: 'Kumoi',
+      inSen: 'In-Sen',
+      yo: 'Yo Scale',
+      pelog: 'Pelog Pentatonic',
+      wholeTone: 'Whole Tone',
+      chromatic: 'Chromatic',
+      octatonic: 'Octatonic (Half-Whole)',
+      augmented: 'Augmented Scale',
+      dorianFlat2: 'Dorian ♭2',
+      lydianAugmented: 'Lydian Augmented',
+      lydianDominant: 'Lydian Dominant',
+      mixolydianFlat6: 'Mixolydian ♭6',
+      locrianNatural2: 'Locrian ♮2',
+      altered: 'Altered Scale (Super Locrian)',
+      bebopMajor: 'Bebop Major',
+      bebopMinor: 'Bebop Minor',
+      bebopDominant: 'Bebop Dominant',
+      bebopDorian: 'Bebop Dorian'
+    };
+    
+    const scaleDescriptions = {
+      major: 'The most fundamental scale in Western music theory',
+      minor: 'The natural minor scale, dark and melancholic',
+      dorian: 'Medieval mode with a raised 6th degree',
+      phrygian: 'Spanish-flavored mode with a flat 2nd',
+      lydian: 'Bright mode with a raised 4th degree',
+      mixolydian: 'Dominant mode with a flat 7th',
+      locrian: 'The darkest mode with diminished character',
+      harmonicMinor: 'Classical minor with raised 7th',
+      melodicMinor: 'Jazz minor ascending form',
+      blues: 'Essential blues scale with blue notes',
+      majorPentatonic: 'Simple 5-note major scale',
+      minorPentatonic: 'Simple 5-note minor scale',
+      wholeTone: 'Dreamy scale of whole steps only',
+      chromatic: 'All 12 semitones',
+      altered: 'Super altered dominant scale for jazz'
+    };
+
+    function updateScale() {
+      const rootNote = document.getElementById('rootNote').value;
+      const scale = document.getElementById('scaleSelect').value;
+      
+      const rootIndex = notes.indexOf(rootNote);
+      const intervals = scaleIntervals[scale];
+      
+      if (!intervals) return;
+      
+      const scaleNotes = intervals.map(interval => {
+        const noteIndex = (rootIndex + interval) % 12;
+        return noteDisplay[noteIndex];
+      });
+      
+      document.getElementById('scaleTitle').textContent = `${rootNote} ${scaleNames[scale]}`;
+      
+      const notesContainer = document.getElementById('scaleNotes');
+      notesContainer.innerHTML = '';
+      
+      scaleNotes.forEach(note => {
+        const noteElement = document.createElement('div');
+        noteElement.className = 'note';
+        noteElement.textContent = note;
+        notesContainer.appendChild(noteElement);
+      });
+      
+      const description = scaleDescriptions[scale] || `${scaleNames[scale]} - Explore this unique scale structure`;
+      document.getElementById('scaleInfo').textContent = description;
+    }
+    
+    function selectScale(scaleKey) {
+      document.getElementById('scaleSelect').value = scaleKey;
+      updateScale();
+    }
+    
+    document.getElementById('rootNote').addEventListener('change', updateScale);
+    document.getElementById('scaleSelect').addEventListener('change', updateScale);
+    
+    // Initialize with C Major
+    updateScale();
+    
+    // Update copyright year based on current date
+    function updateCopyrightYear() {
+      const currentYear = new Date().getFullYear();
+      document.getElementById('currentYear').textContent = currentYear;
+    }
+    
+    // Initialize copyright year
+    updateCopyrightYear();
+  </script>
+</body>
+</html>
